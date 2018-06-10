@@ -46,7 +46,14 @@ Base64인코딩에 관련된 참고자료
 
 ## 프로그램 실행 방법
 
+- test를 거치지 않고 실행하는 법
 > mvn spring-boot:run
+
+- test후 실행 법
+> mvn clean install
+
+위의 명령어 빌드가 성공했다면 target폴더로 들어가 urlShortening.war를 실행한다.
+> java -jar urlShortening.war
 
 ### 실행 전 주의사항
 
