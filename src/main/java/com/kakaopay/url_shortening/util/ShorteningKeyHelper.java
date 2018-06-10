@@ -1,8 +1,6 @@
 package com.kakaopay.url_shortening.util;
 
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Base64;
 
 public class ShorteningKeyHelper {
@@ -61,7 +59,7 @@ public class ShorteningKeyHelper {
         return shorteningUrl.toString();
     }
 
-    private static String parseProtocolFromUrl(String url) {
+    public static String parseProtocolFromUrl(String url) {
         return url.split(":")[0];
     }
 
@@ -74,6 +72,7 @@ public class ShorteningKeyHelper {
         return strBuilder.toString();
     }
 
+    //TODO Url 끝에 '/' 붙어있을 경우 제거
     private static String removeSchemeFromUrl(String url) {
         String[] resultSplitUrl = url.split(":");
         return resultSplitUrl[1].substring(2, resultSplitUrl[1].length());
