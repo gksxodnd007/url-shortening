@@ -23,5 +23,4 @@ public class ShortenedUrlDomain {
     @Column(name = "original_url", nullable = false)
     private String originalUrl;
 
-    //TODO 조회 count 컬럼 생성
 }

@@ -1,5 +1,7 @@
 package com.kakaopay.url_shortening.controller;
 
+import com.kakaopay.url_shortening.commons.exception.BaseException;
+import com.kakaopay.url_shortening.commons.model.BaseCode;
 import com.kakaopay.url_shortening.domain.ShortenedUrlDomain;
 import com.kakaopay.url_shortening.service.UrlShorteningService;
 import org.apache.commons.validator.routines.UrlValidator;
@@ -44,11 +46,9 @@ public class UrlShorteningController {
 
     @GetMapping(value = "/**")
     public String redirectServcie(HttpServletRequest request) {
-        System.out.println(request.getRequestURI());
         final Optional<ShortenedUrlDomain> url = urlShorteningService.getOriginalUrl("http://localhost:8080" + request.getRequestURI());
 
-        //TODO error page로 리다이렉트 안되는 버그 해결하기
-        //오류 메시지 : org.springframework.expression.spel.SpelEvaluationException: EL1008E: Property or field 'timestamp' cannot be found on object of type 'java.util.HashMap' - maybe not public?
-        return url.map(elem -> "redirect:" + elem.getOriginalUrl()).orElse("error");
+        return url.map(elem -> "redirect:" + elem.getOriginalUrl())
+                .orElseThrow(BaseException::new);
     }
 }
