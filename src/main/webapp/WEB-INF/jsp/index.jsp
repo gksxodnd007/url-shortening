@@ -17,10 +17,9 @@
     h3 {
         color: red;
     }
-    #info {
-        color: black;
+    #order {
+        color: blue;
     }
-
     h4 {
         float: right;
         color: navy;
@@ -34,7 +33,6 @@
         <h1>THE LINK KNOWS ALL. SO CAN YOU.</h1>
         <h2>Measure your links with localhost, the world's leading link management platform.</h2>
         <hr>
-        <%-- pageContext가 뭔지 검색해보기 --%>
         <form name="urlForm" action="${pageContext.request.contextPath}/generate/shortening/url" method="POST">
             <table border="1" height="100">
                 <tr height="60">
