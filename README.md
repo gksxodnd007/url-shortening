@@ -52,12 +52,14 @@ Base64인코딩에 관련된 참고자료
 - test후 실행 법
 > mvn clean install
 
+- test로직은 UrlShorteningApplicationTests클래스의 메서드 주석을 참고
+
 위의 명령어 빌드가 성공했다면 target폴더로 들어가 urlShortening.war를 실행한다.
 > java -jar urlShortening.war
 
 ### 실행 전 주의사항
 
-#### application.properties파일의 다음 속성들을 개인의 환경에 맞게 수정할 것
+#### application.properties파일의 다음 속성들을 개인의 환경에 맞게 수정할 것 (DB를 사용한 애플리케이션)
 
 - spring.datasource.url=jdbc:mysql://{ip}:{port}/{databaseName}?{parameterName}={value}...
 - spring.datasource.username={userName}
