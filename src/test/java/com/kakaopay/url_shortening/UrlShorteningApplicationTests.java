@@ -14,9 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
@@ -55,12 +53,12 @@ public class UrlShorteningApplicationTests {
 	/**
 	 * Genereate된 단축 URL의 중복률이 0.5퍼센트 미만일 경우 테스트 통과
 	 * (전체 URL 리스트 갯수 / 중복된 단축URL 갯수) * 100 < 0.5
-	 **/
+	 */
 	@Test
-	public void generateShortenedUrlTest() {
+	public void generateShortenedUrlKeyTest() {
 		//중복을 제거한 단축URL 갯수
 		long resultCount = urlList.stream()
-				.map(ShorteningKeyHelper::generateShortenedUrl)
+				.map(ShorteningKeyHelper::generateShortenedUrlKey)
 				.distinct()
 				.count();
 
@@ -74,7 +72,7 @@ public class UrlShorteningApplicationTests {
 
 	/**
 	 * Url의 Schemes를 분리하는 메서드 테스트
-	 **/
+	 */
 	@Test
 	public void parseFromProtocolTest() {
 		Assert.assertTrue(urlList.stream()
@@ -85,7 +83,7 @@ public class UrlShorteningApplicationTests {
 	/**
 	 * mixedWrongUrlListForTest.txt파일에는 유요하지않은 Url 5개 존재한다.
 	 * 유효하지않은 Url의 갯수를 비교하여 테스트
-	 **/
+	 */
 	@Test
 	public void isValidUrlTest() {
 		UrlValidator urlValidator = new UrlValidator();
@@ -93,7 +91,45 @@ public class UrlShorteningApplicationTests {
 				.filter(url -> !urlValidator.isValid(url))
 				.count();
 
-		Assert.assertTrue(count == 5);
+		Assert.assertEquals(5, count);
+	}
+
+	/**
+	 * hashMap Value에 new HashSet<>()으로 객체를 생성해서 넣었을 경우 같은 객체를 계속 지니고 있는지 테스트
+	 */
+	@Test
+	public void hashSetInHashMapTest() {
+		Map<String, Set<String>> map = new HashMap<>();
+		String key = "2L";
+		map.put(key, new HashSet<>());
+		Set<String> beforeAddObj = map.get(key);
+
+		map.get(key).add("2Laxj=B");
+		map.get(key).add("2LDajf3");
+
+		for (String data : map.get(key)) {
+			System.out.println(data);
+		}
+
+		Set<String> afterAddObj = map.get(key);
+
+		Assert.assertEquals(beforeAddObj, afterAddObj);
+	}
+
+	/**
+	 * 싱글톤 객체가 가지고 있는 인스턴스 변수도 싱글톤 유지가 되는지 테스트
+	 */
+	@Test
+	public void singleTonObjTest() {
+		SingleTonObj singleTonObj = SingleTonObj.getInstance();
+		List<String> list = singleTonObj.getList();
+		list.add("codingsquid");
+		list.add("kakaopay");
+
+		List<String> listB = singleTonObj.getList();
+		listB.forEach(System.out::println);
+
+		Assert.assertEquals(list, listB);
 	}
 
 }
