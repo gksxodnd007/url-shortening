@@ -16,14 +16,6 @@ public class ShorteningKeyHelper {
             this.protocolCode = protocolCode;
             this.protocolName = protocolName;
         }
-
-        public int getProtocolCode() {
-            return this.protocolCode;
-        }
-
-        public String getProtocolName() {
-            return this.protocolName;
-        }
     }
 
     private ShorteningKeyHelper() {

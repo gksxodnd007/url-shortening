@@ -48,7 +48,6 @@ public class UrlShorteningServiceImpl implements UrlShorteningService {
         return Optional.of(newUrlDomain);
     }
 
-    //TODO WAS에서 관리하는 shortenedUrlKey와 DB의 shortenedUrlKey사이의 데이터 정합성을 보장해야함.
     @Override
     public Optional<ShortenedUrlDomain> getShortenedUrlKey(String url) {
         Optional<ShortenedUrlDomain> existedUrlDomain = urlRepository.findByOriginalUrl(url);
