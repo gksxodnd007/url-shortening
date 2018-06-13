@@ -9,13 +9,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-//TODO shortenedUrlMap 컨테이너에 데이터들은 무한증가 데이터이다. OutOfMemoryException이 발생할 가능성이 있으므로 주기적으로 데이터를 지워줘야함.
 @Component
 public class ShortenedUrlManagerImpl implements ShortenedUrlManager {
 
     private UrlRepository urlRepository;
     private final Map<String, Set<String>> shortenedUrlMap;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(ShortenedUrlManagerImpl.class);
 
     @Autowired
     public ShortenedUrlManagerImpl(UrlRepository urlRepository) {
@@ -23,7 +22,6 @@ public class ShortenedUrlManagerImpl implements ShortenedUrlManager {
         this.shortenedUrlMap = new HashMap<>();
     }
 
-    //TODO shortenedUrlMap는 여러스레드 사이에서 공유되는 객체 -> 동기화 작업 해야함(StampLock이용 해보자).
     //TODO 파라미터 이름이 혼동스러움(shortenedUrl인지 originalUrl인지.. 변수명 수정)
     @Override
     public synchronized boolean isExistShortenedUrlKey(String url) {
@@ -85,7 +83,7 @@ public class ShortenedUrlManagerImpl implements ShortenedUrlManager {
     }
 
     @Override
-    public void clearHashMap() {
+    public synchronized void clearHashMap() {
         if (shortenedUrlMap.isEmpty()) {
             return;
         }

@@ -23,7 +23,7 @@ public class UrlShorteningController {
     private final UrlValidator urlValidator;
     private static final String HOST = "http://localhost:8080/";
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final Logger logger = LoggerFactory.getLogger(UrlShorteningController.class);
 
     @Autowired
     public UrlShorteningController(@Qualifier("urlShorteningServiceImpl") UrlShorteningService urlShorteningService) {
