@@ -27,6 +27,3 @@
 ### mvn ###
 *.cmd
 /mvnw
-
-### log ###
-/logs/
