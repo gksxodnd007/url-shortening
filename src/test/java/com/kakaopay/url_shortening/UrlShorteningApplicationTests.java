@@ -81,7 +81,7 @@ public class UrlShorteningApplicationTests {
 	}
 
 	/**
-	 * mixedWrongUrlListForTest.txt파일에는 유요하지않은 Url 5개 존재한다.
+	 * mixedWrongUrlListForTest.txt파일에는 유효하지않은 Url 5개 존재한다.
 	 * 유효하지않은 Url의 갯수를 비교하여 테스트
 	 */
 	@Test
