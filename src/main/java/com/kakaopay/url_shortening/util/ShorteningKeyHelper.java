@@ -5,8 +5,6 @@ import java.util.Base64;
 
 public class ShorteningKeyHelper {
 
-    private static final String HOST = "http://localhost:8080/";
-
     private enum Protocol {
         HTTP(1, "http"),
         HTTPS(2, "https");
@@ -32,7 +30,6 @@ public class ShorteningKeyHelper {
 
     }
 
-    //TODO 테스트 코드 만들기
     /**
      *
      * Generate shortening URL : within 8 charactors
@@ -42,9 +39,9 @@ public class ShorteningKeyHelper {
      * 5 ~ 7 번째 문자 : shortening URL을 요청받은 시점의 서버의 시스템 시간을 base64 인코딩한 결과 출력되는 문자들 중 랜덤 3글자
      *
      * **/
-    public static String generateShortenedUrl(String url) {
+    public static String generateShortenedUrlKey(String url) {
         final String protocol = parseProtocolFromUrl(url);
-        StringBuilder shorteningUrl = new StringBuilder(HOST);
+        StringBuilder shorteningUrl = new StringBuilder();
 
         if (Protocol.HTTPS.protocolName.equals(protocol)) {
             shorteningUrl.append(Protocol.HTTPS.protocolCode);
@@ -72,7 +69,6 @@ public class ShorteningKeyHelper {
         return strBuilder.toString();
     }
 
-    //TODO Url 끝에 '/' 붙어있을 경우 제거
     private static String removeSchemeFromUrl(String url) {
         String[] resultSplitUrl = url.split(":");
         return resultSplitUrl[1].substring(2, resultSplitUrl[1].length());

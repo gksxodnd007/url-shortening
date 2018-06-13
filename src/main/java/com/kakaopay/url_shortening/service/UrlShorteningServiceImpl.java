@@ -2,8 +2,12 @@ package com.kakaopay.url_shortening.service;
 
 import com.kakaopay.url_shortening.dao.UrlRepository;
 import com.kakaopay.url_shortening.domain.ShortenedUrlDomain;
+import com.kakaopay.url_shortening.util.ShortenedUrlManager;
 import com.kakaopay.url_shortening.util.ShorteningKeyHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,10 +16,13 @@ import java.util.Optional;
 public class UrlShorteningServiceImpl implements UrlShorteningService {
 
     private final UrlRepository urlRepository;
+    private final ShortenedUrlManager shortenedUrlManager;
 
     @Autowired
-    public UrlShorteningServiceImpl(UrlRepository urlRepository) {
+    public UrlShorteningServiceImpl(UrlRepository urlRepository,
+                                    @Qualifier("shortenedUrlManagerImpl") ShortenedUrlManager shortenedUrlManager) {
         this.urlRepository = urlRepository;
+        this.shortenedUrlManager = shortenedUrlManager;
     }
 
     @Override
@@ -27,13 +34,13 @@ public class UrlShorteningServiceImpl implements UrlShorteningService {
         }
 
         ShortenedUrlDomain newUrlDomain = new ShortenedUrlDomain();
-        String shortenedUrl = ShorteningKeyHelper.generateShortenedUrl(url);
+        String shortenedUrlKey = ShorteningKeyHelper.generateShortenedUrlKey(url);
 
-        while (urlRepository.findByShortenedUrl(shortenedUrl).isPresent()) {
-            shortenedUrl = ShorteningKeyHelper.generateShortenedUrl(url);
+        while (urlRepository.findByShortenedUrlKey(shortenedUrlKey).isPresent()) {
+            shortenedUrlKey = ShorteningKeyHelper.generateShortenedUrlKey(url);
         }
 
-        newUrlDomain.setShortenedUrl(shortenedUrl);
+        newUrlDomain.setShortenedUrlKey(shortenedUrlKey);
         newUrlDomain.setOriginalUrl(url);
 
         urlRepository.save(newUrlDomain);
@@ -41,8 +48,28 @@ public class UrlShorteningServiceImpl implements UrlShorteningService {
         return Optional.of(newUrlDomain);
     }
 
+    //TODO WAS에서 관리하는 shortenedUrlKey와 DB의 shortenedUrlKey사이의 데이터 정합성을 보장해야함.
+    @Override
+    public Optional<ShortenedUrlDomain> getShortenedUrlKey(String url) {
+        Optional<ShortenedUrlDomain> existedUrlDomain = urlRepository.findByOriginalUrl(url);
+        shortenedUrlManager.loggingShortenedUrlManagerHashMap();
+
+        if (existedUrlDomain.isPresent()) {
+            return existedUrlDomain;
+        }
+
+        String shortenedUrlKey = ShorteningKeyHelper.generateShortenedUrlKey(url);
+
+        while (shortenedUrlManager.isExistShortenedUrlKey(shortenedUrlKey)) {
+            shortenedUrlKey = ShorteningKeyHelper.generateShortenedUrlKey(url);
+        }
+
+        return shortenedUrlManager.addNewShortenedUrlKey(shortenedUrlKey, url);
+    }
+
     @Override
     public Optional<ShortenedUrlDomain> getOriginalUrl(String shortenedUrl) {
-        return urlRepository.findByShortenedUrl(shortenedUrl);
+        return urlRepository.findByShortenedUrlKey(shortenedUrl);
     }
+
 }

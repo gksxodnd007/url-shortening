@@ -6,7 +6,9 @@ import java.util.Optional;
 
 public interface UrlShorteningService {
 
+    @Deprecated
     Optional<ShortenedUrlDomain> getShortenedUrl(String url);
+    Optional<ShortenedUrlDomain> getShortenedUrlKey(String url);
     Optional<ShortenedUrlDomain> getOriginalUrl(String shortenedUrl);
 
 }
