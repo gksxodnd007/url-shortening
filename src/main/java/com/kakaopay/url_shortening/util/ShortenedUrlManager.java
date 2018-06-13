@@ -10,5 +10,6 @@ public interface ShortenedUrlManager {
     Optional<ShortenedUrlDomain> addNewShortenedUrlKey(String shortenedUrlKey, String originalUrl);
     //로깅용 메서드
     void loggingShortenedUrlManagerHashMap();
+    void clearHashMap();
 
 }

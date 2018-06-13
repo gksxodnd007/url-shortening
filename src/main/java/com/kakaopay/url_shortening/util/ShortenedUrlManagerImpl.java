@@ -84,4 +84,11 @@ public class ShortenedUrlManagerImpl implements ShortenedUrlManager {
         }
     }
 
+    @Override
+    public void clearHashMap() {
+        if (shortenedUrlMap.isEmpty()) {
+            return;
+        }
+        shortenedUrlMap.clear();
+    }
 }
