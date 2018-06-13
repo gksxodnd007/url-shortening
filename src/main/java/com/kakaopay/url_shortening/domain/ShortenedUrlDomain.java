@@ -17,8 +17,8 @@ public class ShortenedUrlDomain {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "shortened_url", unique = true, nullable = false)
-    private String shortenedUrl;
+    @Column(name = "shortened_url_key", unique = true, nullable = false)
+    private String shortenedUrlKey;
 
     @Column(name = "original_url", nullable = false)
     private String originalUrl;
