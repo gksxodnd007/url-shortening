@@ -67,3 +67,9 @@ Base64인코딩에 관련된 참고자료
 
 #### Maven으로 실행 할 경우 설치 유무 확인
 #### jdk 버전 확인(해당 애플리케이션은 JDK1.8기준으로 개발됨)
+
+### 실행 화면
+
+![1](https://i.imgur.com/4ugLwQW.png)
+![2](https://i.imgur.com/JR0tif7.png)
+![3](https://i.imgur.com/rwgupeX.png)
