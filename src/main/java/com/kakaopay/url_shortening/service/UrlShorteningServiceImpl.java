@@ -25,6 +25,7 @@ public class UrlShorteningServiceImpl implements UrlShorteningService {
         this.shortenedUrlManager = shortenedUrlManager;
     }
 
+    @Deprecated
     @Override
     public Optional<ShortenedUrlDomain> getShortenedUrl(String url) {
         Optional<ShortenedUrlDomain> existedUrlDomain = urlRepository.findByOriginalUrl(url);
