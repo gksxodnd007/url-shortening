@@ -22,45 +22,45 @@ public class ShortenedUrlManagerImpl implements ShortenedUrlManager {
         this.shortenedUrlMap = new HashMap<>();
     }
 
-    //TODO 파라미터 이름이 혼동스러움(shortenedUrl인지 originalUrl인지.. 변수명 수정)
-    @Override
-    public synchronized boolean isExistShortenedUrlKey(String url) {
-        final String key = url.substring(0, 2);
-
-        if (shortenedUrlMap.containsKey(key)) {
+    private boolean isExistShortenedUrlKey(String shortenedUrlKey, String hashKey) {
+        if (shortenedUrlMap.containsKey(hashKey)) {
             loggingShortenedUrlManagerHashMap();
-            return shortenedUrlMap.get(key).contains(url);
+            return shortenedUrlMap.get(hashKey).contains(shortenedUrlKey);
         }
 
-        List<String> urlKeys = urlRepository.findAllShortenedUrlKeyByPrefix(key);
+        List<String> urlKeys = urlRepository.findAllShortenedUrlKeyByPrefix(hashKey);
         if (urlKeys.isEmpty()) {
             return false;
         }
-        shortenedUrlMap.put(key, new HashSet<>());
+
+        shortenedUrlMap.put(hashKey, new HashSet<>());
         urlKeys.forEach(urlKey -> {
-            logger.info("hashMap Key : {}, value: {}", key, urlKey);
-            shortenedUrlMap.get(key).add(urlKey);
+            logger.info("hashMap Key : {}, value: {}", hashKey, urlKey);
+            shortenedUrlMap.get(hashKey).add(urlKey);
         });
         loggingShortenedUrlManagerHashMap();
 
-        return shortenedUrlMap.get(key).contains(url);
+        return shortenedUrlMap.get(hashKey).contains(shortenedUrlKey);
     }
 
     @Override
-    public synchronized Optional<ShortenedUrlDomain> addNewShortenedUrlKey(String shortenedUrlKey, String originalUrl) {
+    public synchronized Optional<ShortenedUrlDomain> addNewShortenedUrlKey(String url) {
+        String shortenedUrlKey = ShorteningKeyHelper.generateShortenedUrlKey(url);
+        final String hashKey = shortenedUrlKey.substring(0, 2);
+
+        while (isExistShortenedUrlKey(shortenedUrlKey, hashKey)) {
+            shortenedUrlKey = ShorteningKeyHelper.generateShortenedUrlKey(url);
+        }
+
         ShortenedUrlDomain domain = new ShortenedUrlDomain();
         domain.setShortenedUrlKey(shortenedUrlKey);
-        domain.setOriginalUrl(originalUrl);
+        domain.setOriginalUrl(url);
         ShortenedUrlDomain result = urlRepository.save(domain);
 
-        final String key = shortenedUrlKey.substring(0, 2);
-        logger.info("hashMap Key : {}, value: {}", key, shortenedUrlKey);
-        if (shortenedUrlMap.containsKey(key)) {
-            shortenedUrlMap.get(key).add(shortenedUrlKey);
-        } else {
-            shortenedUrlMap.put(key, new HashSet<>());
-            shortenedUrlMap.get(key).add(shortenedUrlKey);
-        }
+        shortenedUrlMap.put(hashKey, new HashSet<>());
+        shortenedUrlMap.get(hashKey).add(shortenedUrlKey);
+
+        logger.info("hashMap Key : {}, value: {}", hashKey, shortenedUrlKey);
 
         return Optional.of(result);
     }

@@ -6,8 +6,7 @@ import java.util.Optional;
 
 public interface ShortenedUrlManager {
 
-    boolean isExistShortenedUrlKey(String url);
-    Optional<ShortenedUrlDomain> addNewShortenedUrlKey(String shortenedUrlKey, String originalUrl);
+    Optional<ShortenedUrlDomain> addNewShortenedUrlKey(String url);
     //로깅용 메서드
     void loggingShortenedUrlManagerHashMap();
     void clearHashMap();

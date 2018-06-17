@@ -58,13 +58,7 @@ public class UrlShorteningServiceImpl implements UrlShorteningService {
             return existedUrlDomain;
         }
 
-        String shortenedUrlKey = ShorteningKeyHelper.generateShortenedUrlKey(url);
-
-        while (shortenedUrlManager.isExistShortenedUrlKey(shortenedUrlKey)) {
-            shortenedUrlKey = ShorteningKeyHelper.generateShortenedUrlKey(url);
-        }
-
-        return shortenedUrlManager.addNewShortenedUrlKey(shortenedUrlKey, url);
+        return shortenedUrlManager.addNewShortenedUrlKey(url);
     }
 
     @Override
