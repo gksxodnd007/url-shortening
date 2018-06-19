@@ -67,7 +67,7 @@ public class ShorteningKeyHelper {
     }
 
     private static String getStringAfterBase64UrlEncoding(String url) {
-        return new String(Base64.getUrlEncoder().encode(url.getBytes()));
+        return Base64.getEncoder().encodeToString(url.getBytes());
     }
 
 }
