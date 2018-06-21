@@ -4,8 +4,6 @@ import com.kakaopay.url_shortening.dao.UrlRepository;
 import com.kakaopay.url_shortening.domain.ShortenedUrlDomain;
 import com.kakaopay.url_shortening.util.ShortenedUrlManager;
 import com.kakaopay.url_shortening.util.ShorteningKeyHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Qualifier("serviceImpl")
 public class UrlShorteningServiceImpl implements UrlShorteningService {
 
     private final UrlRepository urlRepository;

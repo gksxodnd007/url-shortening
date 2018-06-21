@@ -26,7 +26,7 @@ public class UrlShorteningController {
     private static final Logger logger = LoggerFactory.getLogger(UrlShorteningController.class);
 
     @Autowired
-    public UrlShorteningController(@Qualifier("urlShorteningServiceImpl") UrlShorteningService urlShorteningService) {
+    public UrlShorteningController(@Qualifier("serviceImpl") UrlShorteningService urlShorteningService) {
         this.urlShorteningService = urlShorteningService;
         this.urlValidator = new UrlValidator();
     }
